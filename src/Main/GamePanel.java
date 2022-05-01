@@ -1,3 +1,7 @@
+package Main;
+
+import GameState.GameStateManager;
+import jdk.jfr.Threshold;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -5,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings("Serializable")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public static final int WIDTH=320;
@@ -13,11 +18,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private Thread thread;
     private boolean running;
-    private int FPS;
+    private int FPS=60;
     private long targetTime =1000/FPS;
 
     private BufferedImage image;
     private Graphics2D g;
+
+    private GameStateManager gsm;
+
 
     public GamePanel(){
         super();
@@ -36,8 +44,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
     public void init(){
         image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        g=(Graphics2D) g;
+        g=(Graphics2D) image.getGraphics();
         running =true;
+
+        gsm= new GameStateManager();
     }
 
     @Override
@@ -52,15 +62,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             update();
             draw();
             drawToScreen();
+
+            elapsed=System.nanoTime()-start;
+            wait = targetTime-elapsed/1000000;
+            try{
+                Thread.sleep(wait);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void update(){
+    private void update(){ gsm.update(); }
 
-    }
     private void draw(){
-
+    gsm.draw(g);
     }
+
     private void drawToScreen(){
         Graphics g2=getGraphics();
         g2.drawImage(image,0,0,null);
@@ -73,12 +91,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        gsm.keyPressed(e.getKeyCode());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        gsm.keyReleased(e.getKeyCode());
     }
 
 
