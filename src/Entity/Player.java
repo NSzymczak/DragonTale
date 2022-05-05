@@ -125,7 +125,8 @@ public class Player extends MapObject {
                     dx=0;
                 }
             }
-        }    // cannot move while attacking, except in air
+        }
+        // cannot move while attacking, except in air
         if((currentAction==SCRATCHING || currentAction==FIREBALL )&& !(jumping && falling)){
             dx=0;
         }
@@ -161,62 +162,29 @@ public class Player extends MapObject {
         setPosition(xtemp, ytemp);
 
         // set animation
-        if(scratching) {
-            if(currentAction != SCRATCHING) {
-                action(SCRATCHING,50,60);
-                currentAction = SCRATCHING;
-                animation.setFrames(sprites.get(SCRATCHING));
-                animation.setDelay(50);
-                width = 60;
+        if(scratching) { //czy drapie
+            action(SCRATCHING,50,60);
+        }
+        else if(firing) { //czy atakuje
+            action(FIREBALL,100,30);
+        }
+        else if(dy > 0) { // czy jest w górze
+            if(gliding) //szybuje
+            {
+                action(GLIDING,100,30);
+            }
+            else{ //spada
+                action(FALLING,100,30);
             }
         }
-        else if(firing) {
-            if(currentAction != FIREBALL) {
-                currentAction = FIREBALL;
-                animation.setFrames(sprites.get(FIREBALL));
-                animation.setDelay(100);
-                width = 30;
-            }
+        else if(dy < 0) { //postać skacze
+            action(JUMPING,-1,30);
         }
-        else if(dy > 0) {
-            if(gliding) {
-                if(currentAction != GLIDING) {
-                    currentAction = GLIDING;
-                    animation.setFrames(sprites.get(GLIDING));
-                    animation.setDelay(100);
-                    width = 30;
-                }
-            }
-            else if(currentAction != FALLING) {
-                currentAction = FALLING;
-                animation.setFrames(sprites.get(FALLING));
-                animation.setDelay(100);
-                width = 30;
-            }
+        else if(left || right) { //postać porusza się lewo/ prawo
+            action(WALKING,40,30);
         }
-        else if(dy < 0) {
-            if(currentAction != JUMPING) {
-                currentAction = JUMPING;
-                animation.setFrames(sprites.get(JUMPING));
-                animation.setDelay(-1);
-                width = 30;
-            }
-        }
-        else if(left || right) {
-            if(currentAction != WALKING) {
-                currentAction = WALKING;
-                animation.setFrames(sprites.get(WALKING));
-                animation.setDelay(40);
-                width = 30;
-            }
-        }
-        else {
-            if(currentAction != IDLE) {
-                currentAction = IDLE;
-                animation.setFrames(sprites.get(IDLE));
-                animation.setDelay(400);
-                width = 30;
-            }
+        else { //postać stoi
+            action(IDLE,400,30);
         }
 
         animation.update();

@@ -91,10 +91,10 @@ public abstract class MapObject {
         int bl=tileMap.getType(bottomTile,leftTile);
         int br=tileMap.getType(bottomTile,rightTile);
 
-        topLeft=(tl==Tile.BLOCKED);
-        topRight=tr==Tile.BLOCKED;
-        bottomLeft=bl==Tile.BLOCKED;
-        bottomRight=br==Tile.BLOCKED;
+        topLeft= (tl==Tile.BLOCKED);
+        topRight= (tr==Tile.BLOCKED);
+        bottomLeft= (bl==Tile.BLOCKED);
+        bottomRight= (br==Tile.BLOCKED);
     }
     public void checkTileMapCollision(){
         currCol=(int) x/tileSize;
