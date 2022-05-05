@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("Serializable")
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public static final int WIDTH=320;
@@ -68,6 +68,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             try{
                 Thread.sleep(wait);
             } catch (Exception e) {
+                System.out.println(wait);
                 e.printStackTrace();
             }
         }
@@ -81,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void drawToScreen(){
         Graphics g2=getGraphics();
-        g2.drawImage(image,0,0,null);
+        g2.drawImage(image,0,0,WIDTH*SCALE,HEIGHT*SCALE,null);
         g2.dispose();
     }
     @Override
