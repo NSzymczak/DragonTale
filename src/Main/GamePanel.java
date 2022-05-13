@@ -66,11 +66,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
             elapsed=System.nanoTime()-start;
             wait = targetTime-elapsed/1000000;
-            try{
-                Thread.sleep(wait);
-            } catch (Exception e) {
-                System.out.println(wait);
-                e.printStackTrace();
+            if(wait>0){
+                try{
+                    Thread.sleep(wait);
+                } catch (Exception e) {
+                    System.out.println(wait);
+                    e.printStackTrace();
+                }
             }
         }
     }
